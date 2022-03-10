@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import ContactForm from './ContactForm';
@@ -8,16 +8,24 @@ beforeEach(() => {
     render(<ContactForm/>)
 })
 
+const firstNameInput = () => screen.getByPlaceholderText("Edd")
+const lastNameInput = () => screen.getByPlaceholderText("Burke")
+const emailInput = () => screen.getByPlaceholderText("bluebill1049@hotmail.com")
+const errorMessage = () => screen.queryByText('Error:', { exact: false })
+
 test('renders without errors', () => {
     //Passes as is_handled in beforeEach above
 });
 
 test('renders the contact form header', () => {
-
+    const header = screen.queryByText('Contact Form', { exact: false })
+    expect(header).toBeVisible()
+    expect(header).toBeInTheDocument() 
 });
 
 test('renders ONE error message if user enters less then 5 characters into firstname.', async () => {
-
+    fireEvent.change(firstNameInput(), { target: { value: 'Debi' } })
+    expect(errorMessage()).toBeVisible()
 });
 
 test('renders THREE error messages if user enters no values into any fields.', async () => {
