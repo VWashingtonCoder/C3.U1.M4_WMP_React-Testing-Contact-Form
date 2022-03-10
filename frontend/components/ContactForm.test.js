@@ -48,17 +48,18 @@ describe('Contact Form component - Finished Tests', () => {
         const emailError = screen.queryByText('Error: email must be a valid email address.')
         expect(emailError).toBeVisible()
     });
+    test('t7: renders "lastName is a required field" if an last name is not entered and the submit button is clicked', async () => {
+        fireEvent.change(firstNameInput(), { target: { value: "Retsuko" } })
+        fireEvent.change(emailInput(), { target: { value: 'karaokePanda@gmail.com' } })
+        fireEvent.click(submitBtn())
+        const lastNameError = screen.queryByText('Error: lastName is a required field.')
+        expect(lastNameError).toBeVisible()
+    });
 })
 
 /************************************************************************* */
 
 
-
-
-
-test('renders "lastName is a required field" if an last name is not entered and the submit button is clicked', async () => {
-
-});
 
 test('renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
 
