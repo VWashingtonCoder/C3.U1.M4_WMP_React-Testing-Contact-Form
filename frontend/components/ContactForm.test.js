@@ -8,28 +8,33 @@ beforeEach(() => {
     render(<ContactForm/>)
 })
 
+const header = () => screen.queryByText('Contact Form', { exact: false })
 const firstNameInput = () => screen.getByPlaceholderText("Edd")
 const lastNameInput = () => screen.getByPlaceholderText("Burke")
 const emailInput = () => screen.getByPlaceholderText("bluebill1049@hotmail.com")
 const errorMessage = () => screen.queryByText('Error:', { exact: false })
+const submitBtn = () => screen.queryByText('Submit', { exact: false })
+const errorMessages = () => screen.getAllByText('Error:', { exact: false })
 
-test('renders without errors', () => {
-    //Passes as is_handled in beforeEach above
-});
-
-test('renders the contact form header', () => {
-    const header = screen.queryByText('Contact Form', { exact: false })
-    expect(header).toBeVisible()
-    expect(header).toBeInTheDocument() 
-});
-
-test('renders ONE error message if user enters less then 5 characters into firstname.', async () => {
-    fireEvent.change(firstNameInput(), { target: { value: 'Debi' } })
-    expect(errorMessage()).toBeVisible()
-});
+describe('Contact Form component - Finished Tests', () => {
+    test('renders without errors', () => {
+        //Passes as is_handled in beforeEach above
+    });
+    
+    test('renders the contact form header', () => {
+        expect(header()).toBeVisible()
+        expect(header()).toBeInTheDocument() 
+    });
+    
+    test('renders ONE error message if user enters less then 5 characters into firstname.', async () => {
+        fireEvent.change(firstNameInput(), { target: { value: 'Debi' } })
+        expect(errorMessage()).toBeVisible()
+    });
+})
 
 test('renders THREE error messages if user enters no values into any fields.', async () => {
-
+    fireEvent.click(submitBtn())
+    expect(errorMessages()).toHaveLength(3)
 });
 
 test('renders ONE error message if user enters a valid first name and last name but no email.', async () => {
