@@ -10,11 +10,11 @@ beforeEach(() => {
 
 const header = () => screen.queryByText('Contact Form', { exact: false })
 const firstNameInput = () => screen.getByPlaceholderText("Edd")
-const lastNameInput = () => screen.getByPlaceholderText("Burke")
-const emailInput = () => screen.getByPlaceholderText("bluebill1049@hotmail.com")
 const errorMessage = () => screen.queryByText('Error:', { exact: false })
 const submitBtn = () => screen.queryByText('Submit', { exact: false })
 const errorMessages = () => screen.getAllByText('Error:', { exact: false })
+const lastNameInput = () => screen.getByPlaceholderText("Burke")
+const emailInput = () => screen.getByPlaceholderText("bluebill1049@hotmail.com")
 
 describe('Contact Form component - Finished Tests', () => {
     test('renders without errors', () => {
@@ -30,16 +30,23 @@ describe('Contact Form component - Finished Tests', () => {
         fireEvent.change(firstNameInput(), { target: { value: 'Debi' } })
         expect(errorMessage()).toBeVisible()
     });
+
+    test('renders THREE error messages if user enters no values into any fields.', async () => {
+        fireEvent.click(submitBtn())
+        expect(errorMessages()).toHaveLength(3)
+    });
+    
+    test('renders ONE error message if user enters a valid first name and last name but no email.', async () => {
+        fireEvent.change(firstNameInput(), { target: { value: "Luffy"} })
+        fireEvent.change(lastNameInput(), { target: { value: "D.Monkey"} })
+        fireEvent.click(submitBtn())
+        expect(errorMessage()).toBeVisible()
+    });
 })
 
-test('renders THREE error messages if user enters no values into any fields.', async () => {
-    fireEvent.click(submitBtn())
-    expect(errorMessages()).toHaveLength(3)
-});
+/************************************************************************* */
 
-test('renders ONE error message if user enters a valid first name and last name but no email.', async () => {
 
-});
 
 test('renders "email must be a valid email address" if an invalid email is entered', async () => {
 
