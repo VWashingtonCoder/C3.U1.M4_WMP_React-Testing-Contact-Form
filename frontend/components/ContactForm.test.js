@@ -55,15 +55,24 @@ describe('Contact Form component - Finished Tests', () => {
         const lastNameError = screen.queryByText('Error: lastName is a required field.')
         expect(lastNameError).toBeVisible()
     });
+    test('t8: renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
+        fireEvent.change(firstNameInput(), { target: { value: "Luffy"} })
+        fireEvent.change(lastNameInput(), { target: { value: "D.Monkey"} })
+        fireEvent.change(emailInput(), { target: { value: 'strawHatcaptain@gmail.com' } })
+        fireEvent.click(submitBtn())
+        
+        await screen.findByText('You Submitted:')
+        await screen.findByText('First Name:', { exact: false })
+        await screen.findByText('Last Name:', { exact: false })
+        await screen.findByText('Email:', { exact: false })
+        
+        const messagePost = screen.queryByText('Message: ')
+        expect(messagePost).not.toBeInTheDocument()
+    
+    });
 })
 
 /************************************************************************* */
-
-
-
-test('renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
-
-});
 
 test('renders all fields text when all fields are submitted.', async () => {
 
