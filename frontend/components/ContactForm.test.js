@@ -15,6 +15,7 @@ const submitBtn = () => screen.queryByText('Submit', { exact: false })
 const errorMessages = () => screen.getAllByText('Error:', { exact: false })
 const lastNameInput = () => screen.getByPlaceholderText("Burke")
 const emailInput = () => screen.getByPlaceholderText("bluebill1049@hotmail.com")
+const messageInput = () => screen.queryByLabelText("Message")
 
 describe('Contact Form component - Finished Tests', () => {
     test('t1: renders without errors', () => {
@@ -67,13 +68,24 @@ describe('Contact Form component - Finished Tests', () => {
         await screen.findByText('Email:', { exact: false })
         
         const messagePost = screen.queryByText('Message: ')
-        expect(messagePost).not.toBeInTheDocument()
+        expect(messagePost).not.toBeInTheDocument()    
+    });
     
+    test('t9: renders all fields text when all fields are submitted.', async () => {
+        fireEvent.change(firstNameInput(), { target: { value: "Luffy"} })
+        fireEvent.change(lastNameInput(), { target: { value: "D.Monkey"} })
+        fireEvent.change(emailInput(), { target: { value: 'strawHatcaptain@gmail.com' } })
+        fireEvent.change(messageInput(), { target: { value: "I'm gonna be king of the pirates!" } })
+        fireEvent.click(submitBtn())
+            
+        await screen.findByText('You Submitted:')
+        await screen.findByText('First Name:', { exact: false })
+        await screen.findByText('Last Name:', { exact: false })
+        await screen.findByText('Email:', { exact: false })
+        await screen.findByText('Message:', { exact: false })
     });
 })
 
 /************************************************************************* */
 
-test('renders all fields text when all fields are submitted.', async () => {
 
-});
